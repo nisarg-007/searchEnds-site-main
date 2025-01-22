@@ -1,0 +1,140 @@
+@use '../utils' as *;
+
+  /*
+ ::::::::::::::::::::::::::
+  CASE AREA CSS
+ ::::::::::::::::::::::::::
+ */
+
+//===  case study 3 ====
+
+.case3 {
+    .image-area {
+        margin-top: 30px;
+        text-align: center;
+        position: relative;
+        .image {
+            img {
+                width: 100%;
+            }
+        }
+
+        &::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background-color: var(--vtc-bg-main-bg-3);
+            border-radius: 4px;
+            transform: scale(1);
+            opacity: 0;
+            transition: all .4s;
+        }
+
+        .heading-area {
+            position: absolute;
+            top: 50%;
+            z-index: 9;
+            left: -50%;
+            right: -50%;
+            margin-top: -70px;
+            opacity: 0;
+            transition: all .4s;
+
+            .icon {
+                display: inline-block;
+                height: 48px;
+                width: 48px;
+                background-color: var(--vtc-bg-bg-white);
+                border-radius: 50%;
+                transform: rotate(-45deg);
+                line-height: 48px;
+                text-align: center;
+                color: var(--vtc-bg-main-bg-3);
+                font-size: 18px;
+            }
+            p {
+                color: var(--vtc-text-text-white-text-1);
+                font-size: var(--f-fs-font-fs16);
+                line-height: var(--f-fs-font-fs16);
+                font-weight: var(--f-fw-medium);
+                padding: 24px 0px 16px 0px;
+            }
+            h4 {
+                a {
+                    display: inline-block;
+                    font-size: var(--f-fs-font-fs22);
+                    line-height: var(--f-fs-font-fs30);
+                    color: var(--vtc-bg-bg-white);
+                    font-weight: var(--f-fw-semibold);
+                    transition: all .4s;
+                }
+            }
+        }
+
+        &:hover {
+            &::after {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                height: 100%;
+                width: 100%;
+                background-color: var(--vtc-bg-main-bg-3);
+                border-radius: 4px;
+                transform: scale(0.9);
+                opacity: 1;
+                transition: all .4s;
+            }
+
+            .heading-area {
+                opacity: 1;
+                transition: all .4s;
+            }
+        }
+    }
+
+    .image-area.image-area2 {
+        max-height: 370px;
+        overflow: hidden;
+        border-radius: 4px;
+    }
+
+    .image-area.image-area3 {
+        max-height: 770px;
+        overflow: hidden;
+        border-radius: 4px;
+    }
+
+    .image-area.active {
+        &::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background-color: var(--vtc-bg-main-bg-3);
+            border-radius: 4px;
+            transform: scale(0.9);
+            opacity: 1;
+            transition: all .4s;
+        }
+
+        .heading-area {
+            opacity: 1;
+            transition: all .4s;
+        }
+    }
+
+}
+
+//===  case study 3 ====
+
+/*
+ ::::::::::::::::::::::::::
+  CASE AREA CSS
+ ::::::::::::::::::::::::::
+ */

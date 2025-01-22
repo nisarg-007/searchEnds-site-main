@@ -1,0 +1,121 @@
+@use '../utils' as *;
+
+  /*
+ ::::::::::::::::::::::::::
+  CHOOSE AREA CSS
+ ::::::::::::::::::::::::::
+ */
+
+
+// ==== choose style 1 ====
+
+.chosse1 {
+  .icon-box {
+    background-color: var(--vtc-bg-common-bg2);
+    border-radius: 4px;
+    padding: 24px;
+    text-align: center;
+    transition: all .4s;
+    margin-bottom: 30px;
+    .icon {
+      margin-bottom: 20px;
+      transition: all .4s;
+
+      img {
+        transition: all .4s;
+      }
+    }
+
+    &:hover {
+      background-color: var(--vtc-bg-main-bg-1);
+      transition: all .4s;
+      transform: translateY(-10px);
+
+      .icon {
+          transition: all .4s;
+        img {
+          transition: all .4s;
+          transform: rotateY(180deg);
+
+          filter: brightness(40);
+        }
+      }
+
+      .heading1 {
+        h3 {
+          transition: all .4s;
+          color: var(--vtc-text-text-white-text-1);
+        }
+
+        p {
+          color: var(--vtc-text-text-white-text-1);
+          transition: all .4s;
+        }
+      }
+    }
+  }
+  
+  .icon-box.icon-box2 {
+    margin-bottom: 0;
+  }
+
+  .image {
+
+    @media #{$md} {
+      margin-top: 30px;
+  }
+
+  @media #{$xs} {
+    margin-top: 30px;
+}
+
+    img {
+      width: 100%;
+      border-radius: 4px;
+    }
+  }
+
+  .choose1-heading {
+    padding-left: 30px;
+
+    @media #{$md} {
+      padding-left: 0;
+      padding-top: 30px;
+  }
+  @media #{$xs} {
+    padding-left: 0;
+    padding-top: 30px;
+}
+
+    .icon-list {
+      margin-top: 20px;
+
+      li {
+        font-size: var(--f-fs-font-fs18);
+        line-height: var(--f-fs-font-fs18);
+        font-weight: var(--f-fw-medium);
+        color: var(--vtc-text-heading-text-1);
+        span {
+          display: inline-block;
+          height: 20px;
+          width: 20px;
+          line-height: 20px;
+          text-align: center;
+          font-size: 12px;
+          background-color: var(--vtc-text-heading-text-1);
+          color: var(--vtc-text-text-white-text-1);
+          border-radius: 50%;
+          margin-right: 5px;
+        }
+      }
+    }
+  }
+}
+
+// ==== choose style 1 ====
+
+/*
+ ::::::::::::::::::::::::::
+  CHOOSE AREA CSS
+ ::::::::::::::::::::::::::
+ */

@@ -1,0 +1,152 @@
+@use '../utils' as *;
+
+  /*
+ ::::::::::::::::::::::::::
+  WORK AREA CSS
+ ::::::::::::::::::::::::::
+ */
+
+// ==== work style 1 ====
+
+.work1 {
+  background-color: var(--vtc-bg-common-bg2);
+
+  .work1-heading {
+    padding-left: 30px;
+
+    @media #{$md} {
+      padding-left: 0;
+      margin-top: 40px;
+    }
+
+    @media #{$xs} {
+      padding-left: 0;
+      margin-top: 40px;
+    }
+  }
+  .work1-box {
+    padding: 24px;
+    border-radius: 4px;
+    background-color: var(--vtc-bg-bg-white);
+    margin-top: 20px;
+    display: flex;
+    transition: all .4s;
+
+    .icon {
+      background-color: var(--vtc-bg-main-bg-1);
+      height: 60px;
+      width: 60px;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 60px;
+      margin-right: 16px;
+      transition: all .4s;
+
+      img {
+        transition: all .4s;
+        filter: brightness(0) invert(1);
+      }
+    }
+
+    .heading1 {
+      h4 {
+        a {
+          padding-bottom: 10px;
+        }
+      }
+    }
+
+    &:hover {
+      transition: all .4s;
+      transform: translateY(-10px);
+      background-color: var(--vtc-bg-main-bg-1);
+
+      .icon {
+        background-color: var(--vtc-bg-bg-white);
+        transition: all .4s;
+        img {
+          transition: all .4s;
+          filter: none;
+        }
+      }
+
+      .heading1 {
+        h4 {
+          a {
+            transition: all .4s;
+            color: var(--vtc-bg-bg-white);
+          }
+        }
+        p {
+          color: #ffffffd7;
+          transition: all .4s;
+        }
+      }
+    }
+  }
+
+  .work-img {
+    img {
+      width: 100%;
+    }
+  }
+}
+
+// ==== work style 1 ====
+
+// ==== work style 3 ====
+
+.work3 {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+
+  .work3-box {
+    margin-top: 30px;
+    position: relative;
+
+    .image {
+      margin-bottom: 24px;
+      position: relative;
+      z-index: 2;
+    }
+  }
+
+  .work3-box.work3-box2 {
+    position: relative;
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 19px;
+      left: 0;
+      height: 1px;
+      width: 107%;
+      background: white;
+
+      @media #{$md} {
+        display: none;
+      }
+
+      @media #{$xs} {
+        display: none;
+      }
+    }
+
+  }
+
+  .shape {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+}
+
+// ==== work style 3 ====
+
+   /*
+ ::::::::::::::::::::::::::
+  WORK AREA CSS
+ ::::::::::::::::::::::::::
+ */

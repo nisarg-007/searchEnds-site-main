@@ -1,0 +1,24 @@
+@use '../utils' as *;
+
+  /*
+ ::::::::::::::::::::::::::
+  PROHECT AREA CSS
+ ::::::::::::::::::::::::::
+ */
+
+ .project-two__single-box {
+  @media #{$md} {
+    margin-top: 30px;
+  }
+
+  @media #{$xs} {
+    margin-top: 30px;
+  }
+ }
+
+
+  /*
+ ::::::::::::::::::::::::::
+  PROHECT AREA CSS
+ ::::::::::::::::::::::::::
+ */

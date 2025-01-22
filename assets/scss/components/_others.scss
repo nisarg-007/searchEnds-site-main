@@ -1,0 +1,174 @@
+@use '../utils' as *;
+
+  /*
+ ::::::::::::::::::::::::::
+  OTHERS AREA CSS
+ ::::::::::::::::::::::::::
+ */
+
+//=== hero 1 logo slider ====
+
+.hero1-slider {
+  padding: 50px 0px;
+  background-color: var(--vtc-text-heading-text-1);
+}
+
+//=== hero 1 logo slider ====
+
+//=== hero 3 logo slider ====
+
+.logo-slider3 {
+  .single-slider {
+    margin: 0px 10px;
+  }
+}
+
+.logo-slider4 {
+  margin-top: 40px;
+  .single-slider {
+    margin: 0px 10px;
+  }
+}
+
+.logo-slider-area {
+  .slider-pera {
+    margin-bottom: 60px;
+    position: relative;
+    background-color: #fff;
+    z-index: 2;
+    text-align: center;
+    p {
+      color: var(--vtc-text-heading-text-1);
+      text-align: center;
+      font-weight: var(--f-fw-bold);
+      font-size: var(--f-fs-font-fs20);
+      line-height: var(--f-fs-font-fs20);
+      background-color: #fff;
+      padding: 0px 40px;
+      display: inline-block;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 10px;
+      left: 0;
+      height: 2px;
+      width: 100%;
+      background-color: var(--vtc-bg-common-bg4);
+      z-index: -1;
+    }
+  }
+}
+
+//=== hero 3 logo slider ====
+
+//=== solution area 4 ====
+
+.solution4-box {
+  margin-top: 34px;
+  background-color: var(--vtc-bg-common-bg7);
+  border-radius: 4px;
+  transition: all .4s;
+
+  .image {
+    overflow: hidden;
+    border-radius: 4px 4px 0px 0px;
+    img {
+      width: 100%;
+      transition: all .4s;
+    }
+  }
+
+  .icon {
+    height: 60px;
+    width: 60px;
+    line-height: 60px;
+    text-align: center;
+    border-radius: 50%;
+    background-color: #fff;
+    margin-top: -30px;
+    margin-left: 24px;
+    position: relative;
+    z-index: 2;
+    transition: all .4s;
+
+    img {
+      transition: all .4s;
+    }
+  }
+
+  .heading4 {
+    padding: 24px;
+  }
+
+  &:hover {
+    transform: translateY(-10px);
+    transition: all .4s;
+    .image {
+      img {
+        transition: all .4s;
+        transform: rotate(2deg) scale(1.1);
+      }
+    }
+
+    .icon {
+      background-color: var(--vtc-bg-main-bg-6);
+      transition: all .4s;
+      transform: rotateY(180deg);
+      img {
+        transition: all .4s;
+        filter: brightness(40);
+      }
+    }
+  }
+}
+
+//=== solution area 4 ====
+
+//=== VIDEO AREA START ====
+
+.video-area5 {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 800px;
+
+  .video-area-button {
+    margin-top: 200px;
+
+    a {
+      display: inline-block;
+      height: 100px;
+      width: 100px;
+      background-color: #fff;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 100px;
+      font-size: 24px;
+      color: var(--vtc-bg-main-bg-2);
+      transition: all .4s;
+
+      &:hover {
+        color: #fff;
+        background-color: var(--vtc-bg-main-bg-2);
+      }
+    }
+
+    p {
+      color: #fff;
+      font-size: var(--f-fs-font-fs24);
+      line-height: var(--f-fs-font-fs24);
+      font-weight: var(--f-fw-bold);
+      padding-top: 24px;
+    }
+  }
+}
+
+//=== VIDEO AREA END ====
+
+   /*
+ ::::::::::::::::::::::::::
+  OTHERS AREA CSS
+ ::::::::::::::::::::::::::
+ */
