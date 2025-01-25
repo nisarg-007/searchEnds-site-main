@@ -141,6 +141,7 @@ CSS LIST
     transform: scale(1);
   }
 }
+
 .shape-animaiton1 {
   position: relative;
   animation-name: shape-animaiton1;
@@ -9838,6 +9839,14 @@ body.body {
   position: relative;
   overflow: hidden;
 }
+.site-logo img {
+  transition: transform 0.3s ease; /* Smooth transition effect */
+}
+
+.site-logo img:hover {
+  transform: scale(1.1); /* Scale the image to 110% */
+}
+
 
 .site-logo a {
   display: inline-block;
