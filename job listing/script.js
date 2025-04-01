@@ -13,7 +13,8 @@ import {
   addDoc, 
   getDocs, 
   doc, 
-  deleteDoc 
+  deleteDoc, 
+  serverTimestamp 
 } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
 // Firebase Configuration
@@ -54,32 +55,96 @@ function showNotification(message, type = "success") {
   }, 3000);
 }
 
+// Function to format timestamp
+function toDateTime(timestamp) {
+  if (!timestamp) return "Unknown";
+  const date = timestamp.toDate();
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Month is 0-indexed
+  const year = String(date.getFullYear()); // Get last 2 digits of the year
+  return `${day}/${month}/${year}`;
+}
+
+
 /* ----- PUBLIC JOB LISTINGS PAGE (index.html) ----- */
-if (document.getElementById("jobListings") && !document.getElementById("loginForm") && !document.getElementById("adminPanel")) {
+if (document.getElementById("jobListings")) {
+  let jobs = [];
+  let currentPage = 1;
+  const jobsPerPage = 10;
+
   async function loadPublicJobs() {
     const jobListings = document.getElementById("jobListings");
-    jobListings.innerHTML = "";
+    jobListings.innerHTML = "<p class='loading-text'>Loading jobs...</p>";
+
     try {
       const querySnapshot = await getDocs(collection(db, "jobs"));
+      jobs = [];
+
       querySnapshot.forEach((docSnap) => {
-        const jobData = docSnap.data();
-        jobListings.innerHTML += `
-          <div class="job">
-            <p><strong>Job ID:</strong> ${docSnap.id}</p>
-            <p><strong>Title:</strong> ${jobData.title}</p>
-            <p><strong>Location:</strong> ${jobData.location}</p>
-            <p><strong>Experience:</strong> ${jobData.experience}</p>
-            <p><strong>Salary:</strong> ${jobData.salary}</p>
-            <a href="${jobData.link}" target="_blank"><button>Go to Job</button></a>
-          </div>
-        `;
+        let jobData = docSnap.data();
+        jobs.push({ id: docSnap.id, ...jobData });
       });
+
+      // Sort jobs from newest to oldest based on timestamp
+      jobs.sort((a, b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0));
+
+      displayJobs();
     } catch (error) {
       console.error("Error loading public jobs:", error);
     }
   }
+
+  function displayJobs() {
+    const jobListings = document.getElementById("jobListings");
+    const pageNumber = document.getElementById("pageNumber");
+    const prevPage = document.getElementById("prevPage");
+    const nextPage = document.getElementById("nextPage");
+
+    jobListings.innerHTML = "";
+
+    const start = (currentPage - 1) * jobsPerPage;
+    const end = start + jobsPerPage;
+    const paginatedJobs = jobs.slice(start, end);
+
+    paginatedJobs.forEach((jobData) => {
+      jobListings.innerHTML += `
+        <div class="job">
+          <p><strong>Job ID:</strong> ${jobData.id}</p>
+          <p><strong>Title:</strong> ${jobData.title}</p>
+          <p><strong>Location:</strong> ${jobData.location}</p>
+          <p><strong>Experience:</strong> ${jobData.experience}</p>
+          <p><strong>Salary:</strong> ${jobData.salary}</p>
+          <p><strong>Posted On:</strong> ${toDateTime(jobData.timestamp)}</p>
+          <a href="${jobData.link}" target="_blank"><button>Go to Job</button></a>
+        </div>
+      `;
+    });
+
+    // Update Pagination Buttons
+    pageNumber.textContent = `Page ${currentPage}`;
+    prevPage.disabled = currentPage === 1;
+    nextPage.disabled = end >= jobs.length;
+  }
+
+  // Pagination Event Listeners
+  document.getElementById("prevPage").addEventListener("click", () => {
+    if (currentPage > 1) {
+      currentPage--;
+      displayJobs();
+    }
+  });
+
+  document.getElementById("nextPage").addEventListener("click", () => {
+    if (currentPage * jobsPerPage < jobs.length) {
+      currentPage++;
+      displayJobs();
+    }
+  });
+
+  // Load jobs on page load
   loadPublicJobs();
 }
+
 
 /* ----- LOGIN PAGE LOGIC (login.html) ----- */
 if (document.getElementById("loginForm")) {
@@ -127,22 +192,32 @@ if (document.getElementById("adminPanel")) {
   
     try {
       const querySnapshot = await getDocs(collection(db, "jobs"));
+      let jobs = [];
+  
       querySnapshot.forEach((docSnap) => {
-        const jobData = docSnap.data();
+        let jobData = docSnap.data();
+        jobs.push({ id: docSnap.id, ...jobData });
+      });
+  
+      // Sort jobs from newest to oldest
+      jobs.sort((a, b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0));
+  
+      jobs.forEach((jobData) => {
         jobListingsAdmin.innerHTML += `
           <div class="job">
-            <p><strong>Job ID:</strong> ${docSnap.id}</p>
+            <p><strong>Job ID:</strong> ${jobData.id}</p>
             <p><strong>Title:</strong> ${jobData.title}</p>
             <p><strong>Location:</strong> ${jobData.location}</p>
             <p><strong>Experience:</strong> ${jobData.experience}</p>
             <p><strong>Salary:</strong> ${jobData.salary}</p>
+            <p><strong>Posted On:</strong> ${toDateTime(jobData.timestamp)}</p>
             <a href="${jobData.link}" target="_blank"><button>Go to Job</button></a>
-            <button class="delete-job" data-id="${docSnap.id}">Delete Job</button>
+            <button class="delete-job" data-id="${jobData.id}">Delete Job</button>
           </div>
         `;
       });
   
-      // Add event listeners to delete buttons
+      // Add event listeners for delete buttons
       document.querySelectorAll(".delete-job").forEach(button => {
         button.addEventListener("click", () => {
           const jobId = button.getAttribute("data-id");
@@ -157,7 +232,6 @@ if (document.getElementById("adminPanel")) {
     }
   }
   
-
   const addJobForm = document.getElementById("addJobForm");
   if (addJobForm) {
     addJobForm.addEventListener("submit", async (e) => {
@@ -172,7 +246,14 @@ if (document.getElementById("adminPanel")) {
         return;
       }
       try {
-        await addDoc(collection(db, "jobs"), { title, location, experience, salary, link });
+        await addDoc(collection(db, "jobs"), { 
+          title, 
+          location, 
+          experience, 
+          salary, 
+          link,
+          timestamp: serverTimestamp() 
+        });
         showNotification("Job added successfully!", "success");
         addJobForm.reset();
         loadAdminJobs();
@@ -181,21 +262,20 @@ if (document.getElementById("adminPanel")) {
       }
     });
   }
-  
 
-async function deleteJob(jobId) {
-  if (!jobId) {
-    showNotification("Invalid Job ID.", "error");
-    return;
-  }
+  async function deleteJob(jobId) {
+    if (!jobId) {
+      showNotification("Invalid Job ID.", "error");
+      return;
+    }
 
-  try {
-    await deleteDoc(doc(db, "jobs", jobId));
-    showNotification("Job deleted successfully!", "success");
-    loadAdminJobs(); // Refresh job listings after deletion
-  } catch (error) {
-    showNotification("Error deleting job: " + error.message, "error");
+    try {
+      await deleteDoc(doc(db, "jobs", jobId));
+      showNotification("Job deleted successfully!", "success");
+      loadAdminJobs(); // Refresh job listings after deletion
+    } catch (error) {
+      showNotification("Error deleting job: " + error.message, "error");
+    }
   }
 }
-
-}
+``
