@@ -2508,6 +2508,24 @@ body.body {
   display: inline-block;
 }
 
+.flashing-btn {
+  animation: flashEffect 0.8s infinite alternate ease-in-out;
+}
+
+@keyframes flashEffect {
+  0% {
+      background-color: var(--vtc-bg-main-bg-1);
+      box-shadow: 0 0 10px rgba(255, 170, 96, 0.7);
+      transform: scale(1);
+  }
+  100% {
+      background-color: #ffaa60;
+      box-shadow: 0 0 20px rgba(255, 170, 96, 1);
+      transform: scale(1.05);
+  }
+}
+
+
 .theme-btn2 {
   position: relative;
   display: inline-block;
