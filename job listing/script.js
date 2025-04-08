@@ -34,7 +34,9 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 // Set persistence to session (login remains until tab/browser is closed)
-setPersistence(auth, browserSessionPersistence).catch((error) => {
+import { browserLocalPersistence } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+
+setPersistence(auth, browserLocalPersistence).catch((error) => {
   console.error("Error setting persistence:", error);
 });
 
@@ -68,9 +70,41 @@ function toDateTime(timestamp) {
 
 /* ----- PUBLIC JOB LISTINGS PAGE (index.html) ----- */
 if (document.getElementById("jobListings")) {
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      // Admin is logged in — show Add Job button
+      document.getElementById("adminActions").style.display = "block";
+      document.getElementById("publicLogin").style.display = "none";
+    }
+  });
   let jobs = [];
+  let filteredJobs = [];
   let currentPage = 1;
   const jobsPerPage = 10;
+
+  // Inject Search Bar into DOM
+  const jobListingsSection = document.getElementById("jobListings");
+  const searchBar = document.createElement("div");
+  searchBar.innerHTML = `
+    <input type="text" id="jobSearchInput" placeholder="Search jobs..." class="job-search-input">
+  `;
+  jobListingsSection.parentNode.insertBefore(searchBar, jobListingsSection);
+
+  document.addEventListener("input", (e) => {
+    if (e.target.id === "jobSearchInput") {
+      const searchTerm = e.target.value.toLowerCase();
+      filteredJobs = jobs.filter((job) => {
+        return (
+          job.title?.toLowerCase().includes(searchTerm) ||
+          job.location?.toLowerCase().includes(searchTerm) ||
+          job.experience?.toLowerCase().includes(searchTerm) ||
+          job.salary?.toLowerCase().includes(searchTerm)
+        );
+      });
+      currentPage = 1;
+      displayJobs();
+    }
+  });
 
   async function loadPublicJobs() {
     const jobListings = document.getElementById("jobListings");
@@ -85,9 +119,9 @@ if (document.getElementById("jobListings")) {
         jobs.push({ id: docSnap.id, ...jobData });
       });
 
-      // Sort jobs from newest to oldest based on timestamp
+      // Sort by newest
       jobs.sort((a, b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0));
-
+      filteredJobs = [...jobs]; // initialize filteredJobs
       displayJobs();
     } catch (error) {
       console.error("Error loading public jobs:", error);
@@ -104,29 +138,30 @@ if (document.getElementById("jobListings")) {
 
     const start = (currentPage - 1) * jobsPerPage;
     const end = start + jobsPerPage;
-    const paginatedJobs = jobs.slice(start, end);
+    const paginatedJobs = filteredJobs.slice(start, end);
 
-    paginatedJobs.forEach((jobData) => {
-      jobListings.innerHTML += `
-        <div class="job">
-          <p><strong>Job ID:</strong> ${jobData.id}</p>
-          <p><strong>Title:</strong> ${jobData.title}</p>
-          <p><strong>Location:</strong> ${jobData.location}</p>
-          <p><strong>Experience:</strong> ${jobData.experience}</p>
-          <p><strong>Salary:</strong> ${jobData.salary}</p>
-          <p><strong>Posted On:</strong> ${toDateTime(jobData.timestamp)}</p>
-          <a href="${jobData.link}" target="_blank"><button>Go to Job</button></a>
-        </div>
-      `;
-    });
+    if (paginatedJobs.length === 0) {
+      jobListings.innerHTML = `<p class="loading-text">No jobs found.</p>`;
+    } else {
+      paginatedJobs.forEach((jobData) => {
+        jobListings.innerHTML += `
+          <div class="job">
+            <p><strong>Title:</strong> ${jobData.title}</p>
+            <p><strong>Location:</strong> ${jobData.location}</p>
+            <p><strong>Experience:</strong> ${jobData.experience}</p>
+            <p><strong>Salary:</strong> ${jobData.salary}</p>
+            <p><strong>Posted On:</strong> ${toDateTime(jobData.timestamp)}</p>
+            <a href="${jobData.link}" target="_blank"><button>Go to Job</button></a>
+          </div>
+        `;
+      });
+    }
 
-    // Update Pagination Buttons
     pageNumber.textContent = `Page ${currentPage}`;
     prevPage.disabled = currentPage === 1;
-    nextPage.disabled = end >= jobs.length;
+    nextPage.disabled = end >= filteredJobs.length;
   }
 
-  // Pagination Event Listeners
   document.getElementById("prevPage").addEventListener("click", () => {
     if (currentPage > 1) {
       currentPage--;
@@ -135,15 +170,15 @@ if (document.getElementById("jobListings")) {
   });
 
   document.getElementById("nextPage").addEventListener("click", () => {
-    if (currentPage * jobsPerPage < jobs.length) {
+    if (currentPage * jobsPerPage < filteredJobs.length) {
       currentPage++;
       displayJobs();
     }
   });
 
-  // Load jobs on page load
   loadPublicJobs();
 }
+
 
 
 /* ----- LOGIN PAGE LOGIC (login.html) ----- */

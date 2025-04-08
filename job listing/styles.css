@@ -15,6 +15,56 @@ body {
   color: var(--secondary-text);
   text-align: center;
 }
+.job-search-input {
+  display: block;
+  width: 100%;
+  max-width: 400px;
+  margin: 20px auto 10px auto;
+  padding: 10px 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  outline: none;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  transition: border-color 0.2s ease;
+}
+
+.job-search-input:focus {
+  border-color: #007bff;
+}
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #ffff00;
+  padding: 15px 30px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.top-bar h2 {
+  margin: 0 auto;
+  font-weight: 600;
+  color: #333;
+  font-size: 1.5rem;
+}
+
+.top-bar button {
+  background-color: #007bff;
+  color: white;
+  font-weight: bold;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.top-bar button:hover {
+  background-color: #0056b3;
+}
 
 /* Header */
 header {

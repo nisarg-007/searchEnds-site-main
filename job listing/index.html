@@ -1,111 +1,150 @@
 <!DOCTYPE html>
- <html lang="en">
- <head>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Public Job Listings</title>
-   <link rel="stylesheet" href="styles.css">
-   <script type="module" src="script.js"></script>
- 
-   <style>
-     /* General Styles */
-     body {
-       font-family: Arial, sans-serif;
-       margin: 0;
-       padding: 0;
-       background-color: #f4f4f4;
-     }
- 
-     /* Header */
-     header {
-       background-color: #f6ff00;
-       color: white;
-       padding: 20px;
-       text-align: center;
-     }
- 
-     .admin-login {
-       background-color: white;
-       color: #007bff;
-       border: none;
-       padding: 10px 15px;
-       cursor: pointer;
-       border-radius: 5px;
-     }
- 
-     .admin-login:hover {
-       background-color: #e6e6e6;
-     }
- 
-     /* Job Listings */
-     .job-listings-container {
-       display: flex;
-       flex-direction: column;
-       gap: 15px;
-       padding: 20px;
-     }
- 
-     .job {
-       background: white;
-       padding: 15px;
-       border-radius: 8px;
-       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-     }
- 
-     /* Pagination */
-     .pagination {
-       display: flex;
-       justify-content: center;
-       gap: 10px;
-       margin-top: 20px;
-     }
- 
-     .pagination button {
-       background-color: #007bff;
-       color: white;
-       border: none;
-       padding: 10px 15px;
-       cursor: pointer;
-       border-radius: 5px;
-     }
- 
-     .pagination button:disabled {
-       background-color: #ccc;
-       cursor: not-allowed;
-     }
- 
-     .loading-text {
-       text-align: center;
-       font-size: 18px;
-       color: gray;
-     }
-   </style>
- </head>
- <body>
- 
-   <!-- Header Section -->
-   <header>
-     <div class="header-container">
-       <h1>Public Job Listings</h1>
-       <a href="login.html">
-         <button class="admin-login">Admin Login</button>
-       </a>
-     </div>
-   </header>
- 
-   <!-- Main Job Listings Section -->
-   <main>
-     <section id="jobListings" class="job-listings-container">
-       <!-- Job listings will be dynamically inserted here -->
-       <p class="loading-text">Loading jobs...</p>
-     </section>
- 
-     <!-- Pagination Controls -->
-     <div class="pagination">
-       <button id="prevPage" disabled>Previous</button>
-       <span id="pageNumber">Page 1</span>
-       <button id="nextPage" disabled>Next</button>
-     </div>
-   </main>
- 
- </body>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Public Job Listings</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script type="module" src="script.js"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+
+    header {
+      background-color: #f6ff00;
+      color: white;
+      padding: 20px 20px 40px;
+      position: relative;
+    }
+
+    .admin-login {
+      background-color: white;
+      color: #007bff;
+      border: none;
+      padding: 10px 15px;
+      cursor: pointer;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+
+    .admin-login:hover {
+      background-color: #e6e6e6;
+    }
+
+    .header-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+    }
+
+    .header-left,
+    .header-right {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .header-center {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .header-center h2 {
+      margin: 0;
+      color: #333;
+    }
+
+    .job-listings-container {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      padding: 20px;
+    }
+
+    .job {
+      background: white;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .pagination {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .pagination button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    .pagination button:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+
+    .loading-text {
+      text-align: center;
+      font-size: 18px;
+      color: gray;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header Section -->
+  <header>
+    <div class="header-container">
+      <div class="header-left">
+        <a href="../index.html" target="_blank">
+          <button class="admin-login">Searchends Home</button>
+        </a>
+      </div>
+
+      <div class="header-center">
+        <h2>New Jobs</h2>
+      </div>
+
+      <div class="header-right">
+        <div id="adminActions" style="display: none;">
+          <a href="admin.html">
+            <button class="admin-login">Add a New Job</button>
+          </a>
+        </div>
+        <div id="publicLogin">
+          <a href="login.html">
+            <button class="admin-login">Admin Login</button>
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Job Listings Section -->
+  <main>
+    <section id="jobListings" class="job-listings-container">
+      <!-- Job listings will be dynamically inserted here -->
+      <p class="loading-text">Loading jobs...</p>
+    </section>
+
+    <!-- Pagination Controls -->
+    <div class="pagination">
+      <button id="prevPage" disabled>Previous</button>
+      <span id="pageNumber">Page 1</span>
+      <button id="nextPage" disabled>Next</button>
+    </div>
+  </main>
+</body>
+</html>
